@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const helmet = require("helmet");
+const compression = require("compression");
 const expressLayouts = require("express-ejs-layouts");
 const flash = require("connect-flash");
 
@@ -29,24 +30,26 @@ const orderPageRoutes = require("./routes/orders.page.routes");
 const adminOrderRoutes = require("./routes/admin/orders.routes");
 const paymentRoutes = require("./routes/payment.routes");
 const invoiceRoutes = require("./routes/invoice.routes");
-
-
-// 👉 NEW: CONTACT ROUTE
 const contactRoutes = require("./routes/contact.routes");
 
 // ----------------------
 // INITIALIZE APP
 // ----------------------
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); // Required for Render
 
 // ----------------------
-// CONNECT MONGODB
+// CONNECT MONGODB (Production Safe)
 // ----------------------
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 5000,
+  })
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoDB Error:", err));
+  .catch((err) => {
+    console.error("❌ MongoDB Error:", err);
+    process.exit(1);
+  });
 
 // ----------------------
 // VIEW ENGINE
@@ -58,7 +61,7 @@ app.use(expressLayouts);
 app.set("layout", "layout");
 
 // ----------------------
-// SECURITY (CSP SAFE)
+// SECURITY
 // ----------------------
 app.use(
   helmet({
@@ -69,61 +72,63 @@ app.use(
         scriptSrc: [
           "'self'",
           "https://ipapi.co",
-          "https://nominatim.openstreetmap.org"
+          "https://nominatim.openstreetmap.org",
         ],
 
         connectSrc: [
           "'self'",
           "https://ipapi.co",
-          "https://nominatim.openstreetmap.org"
+          "https://nominatim.openstreetmap.org",
         ],
 
         imgSrc: [
           "'self'",
           "data:",
-          "https://res.cloudinary.com"
+          "https://res.cloudinary.com",
         ],
 
         styleSrc: [
           "'self'",
           "'unsafe-inline'",
-          "https://fonts.googleapis.com"
+          "https://fonts.googleapis.com",
         ],
 
         fontSrc: [
           "'self'",
-          "https://fonts.gstatic.com"
-        ]
-      }
-    }
+          "https://fonts.gstatic.com",
+        ],
+      },
+    },
   })
 );
+
+// Compression (Performance)
+app.use(compression());
 
 // ----------------------
 // MIDDLEWARE
 // ----------------------
-app.use(logger("dev"));
+if (process.env.NODE_ENV !== "production") {
+  app.use(logger("dev"));
+}
 
-// 🔥 BODY PARSERS (CRITICAL)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cookieParser());
-
-// Static files
 app.use(express.static(path.join(__dirname, "public")));
 
 // ----------------------
-// SESSION
+// SESSION (Production Safe)
 // ----------------------
 app.use(
   session({
     name: "rivae.sid",
-    secret: process.env.SESSION_SECRET || "dev_secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions",
       ttl: 24 * 60 * 60,
     }),
     cookie: {
@@ -172,18 +177,13 @@ app.use("/checkout", checkoutRouter);
 app.use("/api/location", locationRoutes);
 app.use("/", orderPageRoutes);
 app.use("/", invoiceRoutes);
-
-// 👉 CONTACT PAGE + EMAIL
 app.use("/", contactRoutes);
 
-// API
 app.use("/api/orders", orderRoutes);
 
-// ADMIN
 app.use("/admin/orders", adminOrderRoutes);
 app.use("/admin", adminRouter);
 
-// PAYMENT
 app.use("/payment", paymentRoutes);
 
 // ----------------------
@@ -198,7 +198,9 @@ app.use((req, res, next) => {
 // ----------------------
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error =
+    process.env.NODE_ENV === "production" ? {} : err;
+
   res.status(err.status || 500);
   res.render("error");
 });
