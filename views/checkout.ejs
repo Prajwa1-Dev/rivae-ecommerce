@@ -1,0 +1,170 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
+
+  <!-- HEADER -->
+  <div class="mb-6 sm:mb-10">
+    <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900">
+      Checkout
+    </h1>
+    <p class="text-sm text-neutral-500 mt-1 sm:mt-2">
+      Enter your delivery details to complete the purchase
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-10">
+
+    <!-- LEFT : DELIVERY + PAYMENT -->
+    <div class="lg:col-span-2 bg-white border border-neutral-200 rounded-2xl p-4 sm:p-8">
+
+      <!-- LOCATION CTA -->
+      <div class="mb-6 sm:mb-8">
+        <button
+          type="button"
+          id="detectExactLocationBtn"
+          class="inline-flex items-center gap-2
+                 text-sm font-medium text-neutral-900
+                 border border-neutral-300 rounded-full
+                 px-4 py-2
+                 hover:bg-neutral-900 hover:text-white
+                 transition-all duration-300">
+          📍 Use my current location
+        </button>
+
+        <p class="text-xs text-neutral-400 mt-2">
+          We’ll auto-fill your address using your device location
+        </p>
+      </div>
+
+      <!-- FORM -->
+      <form
+        id="checkoutForm"
+        action="/checkout/place-order"
+        method="POST"
+        class="space-y-8"
+      >
+
+        <!-- DELIVERY ADDRESS -->
+        <div>
+          <h2 class="text-xs sm:text-sm font-semibold tracking-widest text-neutral-800 mb-4 sm:mb-6">
+            DELIVERY ADDRESS
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+
+            <input required name="name" type="text" placeholder="Full Name" class="checkout-input">
+
+            <input required name="phone" type="tel" inputmode="numeric"
+                   placeholder="Phone Number" class="checkout-input">
+
+            <input required name="line1" type="text"
+                   placeholder="House No, Street, Area"
+                   class="checkout-input md:col-span-2">
+
+            <input required id="city" name="city" type="text"
+                   placeholder="City" class="checkout-input">
+
+            <input required id="state" name="state" type="text"
+                   placeholder="State" class="checkout-input">
+
+            <input required id="pincode" name="pincode" type="text"
+                   inputmode="numeric"
+                   placeholder="Pincode" class="checkout-input">
+
+          </div>
+        </div>
+
+        <!-- PAYMENT -->
+        <div>
+          <h2 class="text-xs sm:text-sm font-semibold tracking-widest text-neutral-800 mb-4 sm:mb-6">
+            PAYMENT METHOD
+          </h2>
+
+          <div class="space-y-3 sm:space-y-4">
+            <label class="flex items-center gap-3 border rounded-xl px-4 py-3 cursor-pointer">
+              <input type="radio" name="paymentMethod" value="COD" checked>
+              <span class="text-sm font-medium">Cash on Delivery</span>
+            </label>
+
+            <label class="flex items-center gap-3 border rounded-xl px-4 py-3 cursor-pointer">
+              <input type="radio" name="paymentMethod" value="UPI">
+              <span class="text-sm font-medium">UPI</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- PLACE ORDER -->
+        <button
+          type="submit"
+          class="w-full bg-neutral-900 text-white py-3 sm:py-4 rounded-xl
+                 text-sm tracking-widest uppercase
+                 hover:bg-black transition"
+        >
+          Place Order
+        </button>
+
+      </form>
+    </div>
+
+    <!-- RIGHT : ORDER SUMMARY -->
+    <div class="bg-white border border-neutral-200 rounded-2xl p-4 sm:p-8 h-fit">
+
+      <h2 class="text-xs sm:text-sm font-semibold tracking-widest text-neutral-800 mb-4 sm:mb-6">
+        ORDER SUMMARY
+      </h2>
+
+      <div class="space-y-2 text-sm">
+        <% cart.items.forEach(item => { %>
+          <div class="flex justify-between gap-4">
+            <span class="text-neutral-600 truncate">
+              <%= item.title %> × <%= item.quantity %>
+            </span>
+            <span class="text-neutral-900 whitespace-nowrap">
+              ₹<%= item.price * item.quantity %>
+            </span>
+          </div>
+        <% }) %>
+      </div>
+
+      <hr class="my-5 sm:my-6">
+
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between">
+          <span class="text-neutral-500">Subtotal</span>
+          <span class="text-neutral-900">₹<%= totals.subTotal %></span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-neutral-500">Shipping</span>
+          <span class="text-neutral-900">₹49</span>
+        </div>
+      </div>
+
+      <hr class="my-5 sm:my-6">
+
+      <div class="flex justify-between text-base sm:text-lg font-semibold">
+        <span>Total</span>
+        <span>₹<%= totals.subTotal + 49 %></span>
+      </div>
+
+      <p class="text-xs text-neutral-400 mt-3 sm:mt-4">
+        Secure payments · No hidden charges
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<script src="/js/checkout-location.js"></script>
+
+<style>
+  .checkout-input {
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.875rem;
+    outline: none;
+  }
+  .checkout-input:focus {
+    border-color: #000;
+  }
+</style>

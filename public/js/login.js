@@ -1,0 +1,20 @@
+document.addEventListener("DOMContentLoaded", () => {
+  if (!window.gsap) return;
+
+  gsap.fromTo(
+    ".auth-card",
+    {
+      opacity: 0,
+      y: 50,
+      scale: 0.97
+    },
+    {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 1.1,          // slower, premium feel
+      delay: 0.15,            // slight pause before motion
+      ease: "power4.out"      // smoother than power3
+    }
+  );
+});

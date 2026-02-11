@@ -1,0 +1,139 @@
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+  <!-- Page Header -->
+  <div class="mb-6">
+    <h1 class="text-xl sm:text-2xl font-semibold text-gray-800">
+      My Orders
+    </h1>
+    <p class="text-sm text-gray-500 mt-1">
+      Track, manage, and review your purchases
+    </p>
+  </div>
+
+  <!-- No Orders -->
+  <% if (!orders || orders.length === 0) { %>
+    <div class="bg-white border border-dashed border-gray-300 rounded-lg p-8 text-center">
+      <h2 class="text-base sm:text-lg font-medium text-gray-700 mb-2">
+        You haven’t placed any orders yet
+      </h2>
+      <p class="text-gray-500 mb-6 text-sm">
+        Looks like you haven’t shopped with us yet.
+      </p>
+      <a
+        href="/products"
+        class="inline-block bg-black text-white px-6 py-3 rounded-md
+               text-sm font-medium hover:bg-gray-900 transition">
+        Start Shopping
+      </a>
+    </div>
+
+  <% } else { %>
+
+  <!-- Orders List -->
+  <div class="space-y-5 sm:space-y-6">
+
+    <% orders.forEach(order => { 
+         const status = order.orderStatus;
+    %>
+
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+
+        <!-- Order Header -->
+        <div class="px-4 sm:px-6 py-4 border-b border-gray-100">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+
+            <div>
+              <p class="text-xs text-gray-500">Order ID</p>
+              <p class="font-medium text-gray-800 break-all">
+                <%= order.orderId %>
+              </p>
+            </div>
+
+            <div class="text-xs sm:text-sm text-gray-500">
+              Placed on
+              <span class="font-medium text-gray-700">
+                <%= new Date(order.createdAt).toDateString() %>
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Order Body -->
+        <div class="px-4 sm:px-6 py-5">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+
+            <!-- Total -->
+            <div>
+              <p class="text-xs text-gray-500">Total</p>
+              <p class="font-semibold text-gray-800">
+                ₹<%= order.totalAmount %>
+              </p>
+            </div>
+
+            <!-- Payment -->
+            <div>
+              <p class="text-xs text-gray-500">Payment</p>
+              <p class="font-medium text-gray-700 capitalize">
+                <%= order.paymentStatus %> • <%= order.paymentMethod %>
+              </p>
+            </div>
+
+            <!-- Status -->
+            <div>
+              <p class="text-xs text-gray-500">Status</p>
+              <span class="inline-flex items-center mt-1 px-3 py-1 rounded-full text-xs font-medium
+                <%= status === 'delivered'
+                  ? 'bg-green-100 text-green-700'
+                  : status === 'cancelled'
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-yellow-100 text-yellow-700' %>">
+                <%= status.replace(/_/g, " ") %>
+              </span>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-wrap gap-3 sm:justify-end items-center">
+
+              <!-- View -->
+              <a
+                href="/orders/<%= order._id %>"
+                class="text-xs sm:text-sm font-medium text-gray-700 hover:text-black underline">
+                View Details
+              </a>
+
+              <!-- Download Invoice -->
+              <% if (order.invoice && order.invoice.number) { %>
+                <a
+                  href="/orders/<%= order._id %>/invoice"
+                  class="text-xs sm:text-sm font-medium border border-black px-3 py-1.5 rounded-md
+                         hover:bg-black hover:text-white transition">
+                  Download Invoice
+                </a>
+              <% } %>
+
+              <!-- Cancel -->
+              <% if (!["shipped", "out_for_delivery", "delivered", "cancelled"].includes(status)) { %>
+                <button
+                  data-order-id="<%= order._id %>"
+                  class="cancel-order-btn text-xs sm:text-sm font-medium text-red-600 hover:text-red-800">
+                  Cancel
+                </button>
+              <% } %>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    <% }) %>
+  </div>
+
+  <% } %>
+</div>
+
+<!-- External JS -->
+<script src="/js/orders.js"></script>

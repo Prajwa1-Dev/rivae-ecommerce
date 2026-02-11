@@ -1,0 +1,23 @@
+<% layout('layout') -%>
+<section class="max-w-3xl mx-auto p-6">
+  <h2 class="text-2xl font-bold mb-4">Add Product</h2>
+  <% if (error) { %><p class="text-red-600 mb-3"><%= error %></p><% } %>
+
+  <form action="/admin/products/add" method="post" enctype="multipart/form-data" class="space-y-4">
+    <input name="name" placeholder="Product name" required class="w-full border p-2" />
+    <input name="price" placeholder="Price" required class="w-full border p-2" />
+    <input name="salePrice" placeholder="Sale Price (optional)" class="w-full border p-2" />
+    <input name="categories" placeholder="Categories (comma separated)" class="w-full border p-2" />
+    <input name="tags" placeholder="Tags (comma separated)" class="w-full border p-2" />
+    <input name="sizes" placeholder="Sizes (comma separated, e.g. S,M,L)" class="w-full border p-2" />
+    <textarea name="description" placeholder="Description" class="w-full border p-2"></textarea>
+
+    <label class="block">Images (up to 6)</label>
+    <input type="file" name="images" multiple accept="image/*" />
+
+    <div>
+      <button class="px-4 py-2 bg-black text-white">Create Product</button>
+      <a href="/admin/products" class="ml-3">Cancel</a>
+    </div>
+  </form>
+</section>

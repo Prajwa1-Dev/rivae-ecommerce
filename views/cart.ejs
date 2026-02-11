@@ -1,0 +1,151 @@
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">
+      My Cart
+    </h1>
+    <p class="text-sm text-gray-500 mt-1">
+      Review items before proceeding to checkout
+    </p>
+  </div>
+
+  <% if (!cart || cart.items.length === 0) { %>
+
+    <!-- Empty Cart -->
+    <div class="bg-white border border-dashed rounded-xl p-8 text-center">
+      <p class="text-gray-600 mb-4 text-sm">
+        Your cart is currently empty.
+      </p>
+      <a
+        href="/products"
+        class="inline-block text-sm font-medium text-gray-900 underline underline-offset-4">
+        Continue Shopping →
+      </a>
+    </div>
+
+  <% } else { %>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- CART ITEMS -->
+    <div class="lg:col-span-2 space-y-4">
+
+      <% cart.items.forEach(item => { %>
+        <div class="bg-white border border-gray-200 rounded-xl p-4 flex gap-4">
+
+          <!-- Product Image -->
+          <img
+            src="<%= item.image %>"
+            alt="<%= item.title %>"
+            class="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-lg border"
+          />
+
+          <!-- Product Info -->
+          <div class="flex-1">
+            <p class="font-medium text-gray-900 text-sm sm:text-base">
+              <%= item.title %>
+            </p>
+
+            <p class="text-xs sm:text-sm text-gray-500 mt-1">
+              Size: <%= item.size %>
+            </p>
+
+            <p class="text-sm font-medium text-gray-800 mt-2">
+              ₹<%= item.price %>
+            </p>
+
+            <!-- Quantity + Remove -->
+            <div class="flex items-center justify-between mt-3">
+
+              <!-- Quantity Controls -->
+              <div class="flex items-center gap-2">
+
+                <form action="/cart/decrease" method="POST">
+                  <input type="hidden" name="productId" value="<%= item.productId %>">
+                  <input type="hidden" name="size" value="<%= item.size %>">
+                  <button
+                    type="submit"
+                    onclick="this.disabled=true; this.form.submit();"
+                    class="w-7 h-7 flex items-center justify-center border rounded-md text-sm hover:bg-gray-100">
+                    −
+                  </button>
+                </form>
+
+                <span class="min-w-[20px] text-center text-sm font-medium">
+                  <%= item.quantity %>
+                </span>
+
+                <form action="/cart/increase" method="POST">
+                  <input type="hidden" name="productId" value="<%= item.productId %>">
+                  <input type="hidden" name="size" value="<%= item.size %>">
+                  <button
+                    type="submit"
+                    onclick="this.disabled=true; this.form.submit();"
+                    class="w-7 h-7 flex items-center justify-center border rounded-md text-sm hover:bg-gray-100">
+                    +
+                  </button>
+                </form>
+
+              </div>
+
+              <!-- Remove -->
+              <form action="/cart/remove" method="POST">
+                <input type="hidden" name="productId" value="<%= item.productId %>">
+                <input type="hidden" name="size" value="<%= item.size %>">
+                <button
+                  type="submit"
+                  onclick="this.disabled=true; this.form.submit();"
+                  class="text-xs text-red-600 hover:text-red-800">
+                  Remove
+                </button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      <% }) %>
+
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 h-fit">
+
+      <h2 class="font-medium text-gray-900 mb-4 text-sm sm:text-base">
+        Order Summary
+      </h2>
+
+      <div class="flex justify-between text-sm mb-2">
+        <span class="text-gray-500">Total Items</span>
+        <span class="font-medium text-gray-900">
+          <%= cart.totalQty %>
+        </span>
+      </div>
+
+      <div class="flex justify-between text-sm mb-4">
+        <span class="text-gray-500">Subtotal</span>
+        <span class="font-medium text-gray-900">
+          ₹<%= cart.totalPrice %>
+        </span>
+      </div>
+
+      <a
+        href="/checkout"
+        class="block w-full bg-gray-900 text-white text-center py-3 rounded-md
+               font-medium hover:bg-black transition">
+        Proceed to Checkout
+      </a>
+
+      <a
+        href="/products"
+        class="block text-center text-sm text-gray-600 hover:text-gray-900 mt-4">
+        Continue Shopping
+      </a>
+
+    </div>
+
+  </div>
+
+  <% } %>
+
+</div>

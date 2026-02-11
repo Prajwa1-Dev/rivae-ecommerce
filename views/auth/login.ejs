@@ -1,0 +1,114 @@
+<%
+  pageTitle = "Login";
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RIVAE | Login</title>
+  <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="/stylesheets/output.css">
+</head>
+
+<body class="bg-black min-h-screen w-full flex items-center justify-center overflow-hidden">
+
+  <!-- FULLSCREEN WRAPPER -->
+  <div class="w-full h-full flex items-center justify-center px-4">
+
+    <!-- LOGIN CARD -->
+    <div
+      class="w-full max-w-[360px] bg-neutral-900 text-white
+             rounded-3xl px-6 py-8
+             border border-neutral-800
+             shadow-[0_20px_80px_rgba(0,0,0,0.8)]">
+
+      <!-- BRAND -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-black tracking-[0.35em]">
+          RIVAE
+        </h1>
+        <p class="mt-2 text-[10px] tracking-widest uppercase text-neutral-400">
+          Elevate Your Style
+        </p>
+      </div>
+
+      <!-- TITLE -->
+      <h2 class="text-sm font-semibold tracking-wider mb-6 text-center">
+        Sign In
+      </h2>
+
+      <!-- ERROR -->
+      <% if (error && error.length) { %>
+        <div
+          class="mb-5 text-xs text-red-300 text-center
+                 border border-red-500/30 bg-red-500/10
+                 px-4 py-3 rounded-xl">
+          <%= error[0] %>
+        </div>
+      <% } %>
+
+      <!-- FORM -->
+      <form action="/login" method="POST" class="space-y-5">
+
+        <!-- EMAIL -->
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest text-neutral-400 mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            name="email"
+            autocomplete="username"
+            required
+            class="w-full bg-black border border-neutral-700 rounded-xl
+                   px-4 py-3 text-sm text-white
+                   focus:outline-none focus:border-white transition"
+          />
+        </div>
+
+        <!-- PASSWORD -->
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest text-neutral-400 mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            name="password"
+            autocomplete="current-password"
+            required
+            class="w-full bg-black border border-neutral-700 rounded-xl
+                   px-4 py-3 text-sm text-white
+                   focus:outline-none focus:border-white transition"
+          />
+        </div>
+
+        <!-- BUTTON -->
+        <button
+          type="submit"
+          class="w-full mt-6 py-3 rounded-xl
+                 border border-white
+                 text-xs tracking-widest uppercase font-medium
+                 hover:bg-white hover:text-black
+                 active:scale-[0.97]
+                 transition">
+          Login
+        </button>
+
+      </form>
+
+      <!-- FOOTER -->
+      <p class="text-center text-[11px] text-neutral-400 mt-8">
+        New to RIVAE?
+        <a href="/register" class="text-white hover:underline ml-1">
+          Create account
+        </a>
+      </p>
+
+    </div>
+  </div>
+
+  <script src="/js/login.js" defer></script>
+</body>
+</html>

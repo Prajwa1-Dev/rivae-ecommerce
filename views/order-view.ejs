@@ -1,0 +1,115 @@
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-semibold text-gray-800 mb-6">
+    Order Details
+  </h1>
+
+  <% const status = order.orderStatus; %>
+
+  <!-- Order Summary -->
+  <div class="bg-white border rounded-lg p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+      <div>
+        <p class="text-gray-500">Order ID</p>
+        <p class="font-medium"><%= order.orderId %></p>
+      </div>
+
+      <div>
+        <p class="text-gray-500">Placed On</p>
+        <p class="font-medium">
+          <%= new Date(order.createdAt).toDateString() %>
+        </p>
+      </div>
+
+      <div>
+        <p class="text-gray-500">Total Amount</p>
+        <p class="font-semibold">₹<%= order.totalAmount %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tracking Timeline -->
+  <div class="bg-white border rounded-lg p-6 mb-6">
+    <h2 class="font-medium text-gray-800 mb-4">Order Tracking</h2>
+
+    <% 
+      const steps = [
+        "pending",
+        "confirmed",
+        "packed",
+        "shipped",
+        "out_for_delivery",
+        "delivered"
+      ];
+    %>
+
+    <ol class="space-y-3">
+      <% steps.forEach(step => { %>
+        <li class="flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full
+            <%= steps.indexOf(step) <= steps.indexOf(status)
+                ? 'bg-green-600'
+                : 'bg-gray-300' %>">
+          </span>
+          <span class="text-sm text-gray-700">
+            <%= step.replace(/_/g, " ") %>
+          </span>
+        </li>
+      <% }) %>
+    </ol>
+  </div>
+
+  <!-- Items -->
+  <div class="bg-white border rounded-lg p-6 mb-6">
+    <h2 class="font-medium text-gray-800 mb-4">Items</h2>
+
+    <div class="space-y-4">
+      <% order.items.forEach(item => { %>
+        <div class="flex justify-between text-sm">
+          <div>
+            <p class="font-medium"><%= item.title %></p>
+            <p class="text-gray-500">
+              Qty: <%= item.quantity %>
+            </p>
+          </div>
+          <p class="font-medium">
+            ₹<%= item.price * item.quantity %>
+          </p>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+
+  <!-- Address & Payment -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <div class="bg-white border rounded-lg p-6">
+      <h2 class="font-medium mb-2">Shipping Address</h2>
+      <p class="text-sm text-gray-700">
+        <%= order.address.name %><br>
+        <%= order.address.line1 %><br>
+        <%= order.address.city %>, <%= order.address.state %><br>
+        <%= order.address.pincode %><br>
+        Phone: <%= order.address.phone %>
+      </p>
+    </div>
+
+    <div class="bg-white border rounded-lg p-6">
+      <h2 class="font-medium mb-2">Payment</h2>
+      <p class="text-sm text-gray-700">
+        Method: <%= order.paymentMethod %><br>
+        Status: <%= order.paymentStatus %>
+      </p>
+
+      <% if (!["shipped", "out_for_delivery", "delivered", "cancelled"].includes(status)) { %>
+        <button
+          data-order-id="<%= order._id %>"
+          class="cancel-order-btn mt-4 text-sm font-medium text-red-600 hover:text-red-800">
+          Cancel Order
+        </button>
+      <% } %>
+    </div>
+
+  </div>
+</div>
+
+<script src="/js/order-view.js"></script>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+  <title>RIVAE | <%= pageTitle || "Admin" %></title>
+<link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="/stylesheets/output.css">
+  <script src="/js/gsap.min.js" defer></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+
+<body class="bg-black text-white flex items-center justify-center min-h-screen">
+
+  <div class="w-full max-w-md bg-neutral-900 border border-neutral-800
+              p-10 rounded-2xl shadow-2xl auth-card opacity-0">
+    <%- body %>
+  </div>
+
+</body>
+</html>

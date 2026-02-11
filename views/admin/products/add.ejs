@@ -1,0 +1,160 @@
+<section class="flex justify-center">
+  <!-- CARD -->
+  <div class="w-full max-w-xl bg-white rounded-2xl border border-neutral-200 shadow-sm p-8">
+
+    <!-- TITLE -->
+    <h2 class="text-xl font-extrabold tracking-tight mb-6">
+      Add New Product
+    </h2>
+
+    <!-- ERROR MESSAGE (ONLY SHOW WHEN REAL ERROR EXISTS) -->
+    <% if (typeof error === 'string' && error.length > 0) { %>
+      <div class="mb-6 text-sm text-red-600 bg-red-50 border border-red-200 px-4 py-3 rounded-lg">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form
+      action="/admin/products/add"
+      method="POST"
+      enctype="multipart/form-data"
+      class="space-y-6"
+    >
+
+      <!-- PRODUCT NAME -->
+      <div>
+        <label class="block text-xs font-semibold tracking-widest text-neutral-500 mb-2">
+          PRODUCT NAME
+        </label>
+        <input
+          type="text"
+          name="name"
+          required
+          placeholder="Black Oversized T-Shirt"
+          class="w-full border border-neutral-300 rounded-lg px-4 py-3 text-sm
+                 focus:outline-none focus:border-black transition"
+        />
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div>
+        <label class="block text-xs font-semibold tracking-widest text-neutral-500 mb-2">
+          DESCRIPTION
+        </label>
+        <textarea
+          name="description"
+          rows="4"
+          placeholder="Premium cotton oversized fit..."
+          class="w-full border border-neutral-300 rounded-lg px-4 py-3 text-sm
+                 focus:outline-none focus:border-black transition resize-none"
+        ></textarea>
+      </div>
+
+      <!-- PRICE ROW -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold tracking-widest text-neutral-500 mb-2">
+            PRICE (₹)
+          </label>
+          <input
+            type="number"
+            name="price"
+            required
+            placeholder="999"
+            class="w-full border border-neutral-300 rounded-lg px-4 py-3 text-sm"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold tracking-widest text-neutral-500 mb-2">
+            SALE PRICE
+          </label>
+          <input
+            type="number"
+            name="salePrice"
+            placeholder="799"
+            class="w-full border border-neutral-300 rounded-lg px-4 py-3 text-sm"
+          />
+        </div>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div>
+        <label class="block text-xs font-semibold tracking-widest text-neutral-500 mb-2">
+          CATEGORIES
+        </label>
+        <input
+          type="text"
+          name="categories"
+          placeholder="men, t-shirt"
+          class="w-full border border-neutral-300 rounded-lg px-4 py-3 text-sm"
+        />
+      </div>
+
+      <!-- TAGS -->
+      <div>
+        <label class="block text-xs font-semibold tracking-widest text-neutral-500 mb-2">
+          TAGS
+        </label>
+        <input
+          type="text"
+          name="tags"
+          placeholder="oversized, cotton"
+          class="w-full border border-neutral-300 rounded-lg px-4 py-3 text-sm"
+        />
+      </div>
+
+      <!-- SIZES -->
+      <div>
+        <label class="block text-xs font-semibold tracking-widest text-neutral-500 mb-2">
+          SIZES
+        </label>
+        <input
+          type="text"
+          name="sizes"
+          placeholder="S, M, L, XL"
+          class="w-full border border-neutral-300 rounded-lg px-4 py-3 text-sm"
+        />
+      </div>
+
+      <!-- IMAGES -->
+      <div>
+        <label class="block text-xs font-semibold tracking-widest text-neutral-500 mb-2">
+          PRODUCT IMAGES
+        </label>
+
+        <input
+          type="file"
+          name="images"
+          multiple
+          accept="image/*"
+          class="block w-full text-sm text-neutral-600
+                 file:mr-4 file:py-2 file:px-4
+                 file:rounded-lg file:border-0
+                 file:text-sm file:font-semibold
+                 file:bg-black file:text-white
+                 hover:file:bg-neutral-800 transition"
+        />
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="flex justify-end gap-3 pt-4">
+        <a
+          href="/admin/products"
+          class="px-5 py-2 border rounded-lg text-sm hover:bg-neutral-100 transition"
+        >
+          Cancel
+        </a>
+
+        <button
+          type="submit"
+          class="px-6 py-2 bg-black text-white rounded-lg text-sm
+                 hover:bg-neutral-800 transition"
+        >
+          Save Product
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>

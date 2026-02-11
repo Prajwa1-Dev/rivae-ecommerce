@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+  <title>RIVAE – Premium Menswear & Streetwear</title>
+  <meta name="description"
+        content="RIVAE is a premium menswear brand crafting modern streetwear focused on comfort, precision, and identity.">
+  
+  <link rel="stylesheet" href="/stylesheets/output.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+
+<body class="bg-neutral-50 text-neutral-900">
+
+<!-- ================= NAVBAR ================= -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-neutral-200">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
+
+    <!-- Brand -->
+    <a href="/" class="text-3xl font-black tracking-[0.15em] uppercase hover:opacity-80 transition">
+      RIVAE
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden lg:flex gap-12 text-xs font-medium tracking-[0.2em]">
+      <a href="/" class="hover:underline">HOME</a>
+      <a href="/products" class="hover:underline">SHOP</a>
+      <a href="/cart" class="hover:underline">CART</a>
+    </nav>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-5">
+
+      <!-- Cart -->
+      <a href="/cart" class="group hover:scale-110 transition">
+        <svg class="w-7 h-7 stroke-black group-hover:stroke-neutral-600 transition"
+             fill="none" viewBox="0 0 24 24">
+          <path d="M6 6h15l-1.5 9h-12z" stroke-width="2"/>
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="18" cy="21" r="1"/>
+        </svg>
+      </a>
+
+      <% if (currentUser) { %>
+        <!-- Account -->
+        <a href="/dashboard" class="group hover:scale-110 transition">
+          <svg class="w-7 h-7 stroke-black group-hover:stroke-neutral-600 transition"
+               fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" stroke-width="2"/>
+            <path d="M4 20c1.5-4 6.5-4 8-4s6.5 0 8 4" stroke-width="2"/>
+          </svg>
+        </a>
+
+        <!-- Logout (desktop) -->
+        <a href="/logout"
+           class="hidden lg:inline text-xs tracking-widest hover:opacity-60 transition">
+          LOGOUT
+        </a>
+      <% } else { %>
+        <!-- Login (desktop) -->
+        <a href="/login"
+           class="hidden lg:inline text-xs tracking-widest border border-black px-5 py-2 rounded-full
+                  hover:bg-black hover:text-white transition">
+          LOGIN
+        </a>
+      <% } %>
+
+      <!-- Mobile Menu Button -->
+      <button id="menuBtn" class="lg:hidden p-2">
+        <svg class="w-7 h-7 stroke-black" fill="none" viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6" stroke-width="2"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke-width="2"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke-width="2"/>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="hidden lg:hidden border-t bg-white">
+    <nav class="flex flex-col px-6 py-6 gap-4 text-sm tracking-widest">
+      <a href="/" class="hover:underline">HOME</a>
+      <a href="/products" class="hover:underline">SHOP</a>
+      <a href="/cart" class="hover:underline">CART</a>
+
+      <% if (currentUser) { %>
+        <a href="/dashboard" class="hover:underline">ACCOUNT</a>
+        <a href="/logout" class="hover:underline">LOGOUT</a>
+      <% } else { %>
+        <a href="/login" class="hover:underline">LOGIN</a>
+      <% } %>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="relative h-[92vh]">
+  <img src="/images/hero banner.png"
+       class="absolute inset-0 w-full h-full object-cover" />
+
+  <div class="absolute inset-0 bg-black/45 flex items-end justify-center pb-20">
+    <a href="/products"
+       class="px-10 md:px-14 py-3 border border-white text-white
+              text-sm tracking-[0.25em] uppercase rounded
+              hover:bg-white hover:text-black transition">
+      Shop Menswear
+    </a>
+  </div>
+</section>
+
+<!-- ================= BRAND STATEMENT ================= -->
+<section class="max-w-7xl mx-auto px-6 py-20 md:py-28 text-center">
+  <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">
+    Modern Menswear.<br class="hidden md:block"> Minimal. Purposeful.
+  </h2>
+
+  <p class="mt-6 md:mt-8 max-w-2xl mx-auto text-base md:text-lg text-neutral-600 leading-relaxed">
+    RIVAE is a menswear label built around clean silhouettes, premium fabrics,
+    and everyday functionality.
+  </p>
+</section>
+
+<!-- ================= COLLECTION ================= -->
+<section class="max-w-7xl mx-auto px-6 pb-24">
+  <a href="/products"
+     class="relative block h-[420px] md:h-[520px] overflow-hidden rounded-3xl group">
+
+    <img src="/images/mens collection.png"
+         class="absolute inset-0 w-full h-full object-cover
+                group-hover:scale-105 transition-transform duration-1000" />
+
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30"></div>
+
+    <div class="relative h-full flex items-end px-6 md:px-12 pb-10 md:pb-12">
+      <div class="max-w-xl text-white">
+        <span class="text-xs tracking-[0.35em] uppercase opacity-70">
+          RIVAE · Menswear
+        </span>
+        <h3 class="mt-3 text-3xl md:text-5xl font-semibold">
+          Men’s Collection
+        </h3>
+        <p class="mt-4 text-sm md:text-base opacity-80">
+          Elevated essentials designed for modern everyday wear.
+        </p>
+      </div>
+    </div>
+  </a>
+</section>
+
+<!-- ================= TRUST / BRAND PROMISE ================= -->
+<section class="bg-white border-t border-neutral-200 py-16 md:py-20">
+  <div
+    class="max-w-7xl mx-auto px-6
+           grid grid-cols-1 md:grid-cols-3
+           gap-12 md:gap-14
+           text-center">
+
+    <div>
+      <h4 class="text-lg font-semibold">
+        Premium Fabrics
+      </h4>
+      <p class="text-sm text-neutral-600 mt-3 leading-relaxed">
+        Carefully sourced materials engineered for comfort and durability.
+      </p>
+    </div>
+
+    <div>
+      <h4 class="text-lg font-semibold">
+        Designed in India
+      </h4>
+      <p class="text-sm text-neutral-600 mt-3 leading-relaxed">
+        Thoughtfully designed for modern Indian and global lifestyles.
+      </p>
+    </div>
+
+    <div>
+      <h4 class="text-lg font-semibold">
+        Secure Checkout
+      </h4>
+      <p class="text-sm text-neutral-600 mt-3 leading-relaxed">
+        Trusted payment gateways with complete transaction security.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= EDITORIAL ================= -->
+<section class="max-w-7xl mx-auto px-6 py-20 md:py-28">
+
+  <div
+    class="relative h-[45vh] md:h-[60vh]
+           rounded-2xl overflow-hidden">
+
+    <!-- Image -->
+    <img
+      src="/images/editorial-wide.jpg"
+      alt="RIVAE Editorial"
+      class="absolute inset-0 w-full h-full object-cover">
+
+    <!-- Text Card -->
+    <div
+      class="absolute bottom-6 left-6 md:bottom-8 md:left-8
+             bg-white/90 backdrop-blur
+             px-6 md:px-8
+             py-4 md:py-5
+             rounded-xl
+             max-w-xs md:max-w-none">
+
+      <h3 class="text-2xl md:text-3xl font-black tracking-tight">
+        Everyday. Elevated.
+      </h3>
+
+      <p class="text-sm text-neutral-600 mt-1">
+        Timeless pieces designed for modern life.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-black text-white py-16">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+
+    <div>
+      <h3 class="text-3xl font-black tracking-wide">RIVAE</h3>
+      <p class="text-sm text-neutral-400 mt-3">
+        Premium menswear crafted with precision and intent.
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-semibold mb-4">SHOP</h4>
+      <ul class="space-y-2 text-neutral-300">
+        <li><a href="/products" class="hover:underline">Menswear</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="font-semibold mb-4">SUPPORT</h4>
+      <ul class="space-y-2 text-neutral-300">
+        <li><a href="/contact" class="hover:underline">Contact</a></li>
+        <li><a href="/policy" class="hover:underline">Return Policy</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <p class="text-neutral-500 text-sm mt-12 text-center">
+    © <%= new Date().getFullYear() %> RIVAE. All rights reserved.
+  </p>
+</footer>
+
+<!-- ================= MOBILE MENU SCRIPT ================= -->
+<script src="/js/mobile-menu.js" defer></script>
+
+</body>
+</html>

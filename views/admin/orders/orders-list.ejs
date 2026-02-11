@@ -1,0 +1,139 @@
+<div class="px-4 sm:px-6 py-6">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h1 class="text-xl sm:text-2xl font-semibold text-gray-800">
+      All Orders
+    </h1>
+  </div>
+
+  <div class="overflow-x-auto bg-white rounded-xl border">
+
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-100 text-gray-600">
+        <tr>
+          <th class="px-3 sm:px-4 py-3 text-left font-medium">
+            Order
+          </th>
+          <th class="px-3 sm:px-4 py-3 text-left font-medium hidden sm:table-cell">
+            Date
+          </th>
+          <th class="px-3 sm:px-4 py-3 text-left font-medium">
+            Payment
+          </th>
+          <th class="px-3 sm:px-4 py-3 text-left font-medium">
+            Status
+          </th>
+          <th class="px-3 sm:px-4 py-3 text-right font-medium">
+            Action
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y">
+
+        <% if (orders.length === 0) { %>
+          <tr>
+            <td colspan="5" class="px-4 py-6 text-center text-gray-500">
+              No orders found
+            </td>
+          </tr>
+        <% } %>
+
+        <% orders.forEach(order => { %>
+          <tr class="hover:bg-gray-50 transition">
+
+            <!-- ORDER ID + TOTAL -->
+            <td class="px-3 sm:px-4 py-3">
+              <p class="font-medium text-gray-900 break-all">
+                <%= order.orderId %>
+              </p>
+              <p class="text-xs text-gray-500 mt-1">
+                ₹<%= order.totalAmount %>
+              </p>
+
+              <!-- Invoice Number (small subtle display) -->
+              <% if (order.invoice && order.invoice.number) { %>
+                <p class="text-[11px] text-gray-400 mt-1">
+                  <%= order.invoice.number %>
+                </p>
+              <% } %>
+            </td>
+
+            <!-- DATE (HIDDEN ON MOBILE) -->
+            <td class="px-3 sm:px-4 py-3 hidden sm:table-cell text-gray-600">
+              <%= new Date(order.createdAt).toLocaleDateString("en-IN") %>
+            </td>
+
+            <!-- PAYMENT -->
+            <td class="px-3 sm:px-4 py-3">
+              <div class="flex flex-col gap-0.5">
+                <span class="uppercase text-xs font-medium text-gray-700">
+                  <%= order.paymentMethod %>
+                </span>
+
+                <% if (order.paymentStatus === "paid") { %>
+                  <span class="text-green-600 text-xs font-semibold">
+                    Paid
+                  </span>
+                <% } else if (order.paymentStatus === "failed") { %>
+                  <span class="text-red-600 text-xs font-semibold">
+                    Failed
+                  </span>
+                <% } else { %>
+                  <span class="text-yellow-600 text-xs font-semibold">
+                    Pending
+                  </span>
+                <% } %>
+              </div>
+            </td>
+
+            <!-- ORDER STATUS -->
+            <td class="px-3 sm:px-4 py-3 capitalize">
+              <span
+                class="
+                  inline-flex px-2 py-1 rounded-full text-xs font-semibold
+                  <%= order.orderStatus === 'delivered'
+                    ? 'bg-green-100 text-green-700'
+                    : order.orderStatus === 'shipped'
+                    ? 'bg-blue-100 text-blue-700'
+                    : order.orderStatus === 'cancelled'
+                    ? 'bg-red-100 text-red-700'
+                    : 'bg-yellow-100 text-yellow-700'
+                  %>
+                ">
+                <%= order.orderStatus.replace(/_/g, " ") %>
+              </span>
+            </td>
+
+            <!-- ACTION -->
+            <td class="px-3 sm:px-4 py-3 text-right">
+              <div class="flex flex-col sm:flex-row items-end sm:items-center justify-end gap-2">
+
+                <!-- View -->
+                <a
+                  href="/admin/orders/<%= order._id %>"
+                  class="text-indigo-600 hover:underline font-medium text-sm">
+                  View
+                </a>
+
+                <!-- Invoice Download -->
+                <% if (order.invoice && order.invoice.number) { %>
+                  <a
+                    href="/admin/orders/<%= order._id %>/invoice"
+                    class="px-3 py-1 border border-gray-300 rounded-md
+                           text-xs font-medium hover:bg-gray-100 transition">
+                    Invoice
+                  </a>
+                <% } %>
+
+              </div>
+            </td>
+
+          </tr>
+        <% }) %>
+
+      </tbody>
+    </table>
+  </div>
+</div>

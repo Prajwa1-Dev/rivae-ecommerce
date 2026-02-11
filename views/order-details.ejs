@@ -1,0 +1,210 @@
+<%
+  // ✅ ADMIN-ALIGNED STATUS FLOW (SOURCE OF TRUTH)
+  const steps = ["pending", "shipped", "delivered"];
+
+  const labels = {
+    pending: "Order Placed",
+    shipped: "Shipped",
+    delivered: "Delivered",
+    cancelled: "Cancelled",
+  };
+
+  const currentStatus = order.orderStatus;
+  const currentIndex = steps.indexOf(currentStatus);
+  const isCancelled = currentStatus === "cancelled";
+%>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-xl sm:text-2xl font-semibold text-gray-800">
+      Order Details
+    </h1>
+    <p class="text-xs sm:text-sm text-gray-500 mt-1">
+      Order ID:
+      <span class="font-medium text-gray-700 break-all">
+        <%= order.orderId %>
+      </span>
+    </p>
+  </div>
+
+  <!-- ORDER STATUS -->
+  <div class="mb-6 sm:mb-10">
+    <h2 class="text-xs sm:text-sm font-medium text-gray-600 mb-3">
+      Order Progress
+    </h2>
+
+    <% if (isCancelled) { %>
+      <div class="flex items-center gap-3 bg-red-50 border border-red-200 rounded-lg p-3">
+        <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+        <p class="text-sm font-medium text-red-700">
+          This order has been cancelled
+        </p>
+      </div>
+    <% } else { %>
+
+      <!-- Desktop Timeline -->
+      <div class="hidden md:flex items-center justify-between">
+        <% steps.forEach((step, index) => { %>
+          <div class="flex-1 flex items-center">
+            <div class="flex flex-col items-center">
+              <div
+                class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium
+                <%= index < currentIndex
+                  ? 'bg-green-500 text-white'
+                  : index === currentIndex
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-gray-200 text-gray-500' %>">
+                <%= index + 1 %>
+              </div>
+
+              <p class="mt-2 text-xs text-center
+                <%= index <= currentIndex
+                  ? 'text-gray-800 font-medium'
+                  : 'text-gray-400' %>">
+                <%= labels[step] %>
+              </p>
+            </div>
+
+            <% if (index !== steps.length - 1) { %>
+              <div class="flex-1 h-1 mx-2
+                <%= index < currentIndex ? 'bg-green-500' : 'bg-gray-200' %>">
+              </div>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Mobile Timeline (Compact) -->
+      <div class="md:hidden space-y-3">
+        <% steps.forEach((step, index) => { %>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-2.5 h-2.5 rounded-full
+              <%= index < currentIndex
+                ? 'bg-green-500'
+                : index === currentIndex
+                ? 'bg-gray-900'
+                : 'bg-gray-300' %>">
+            </div>
+            <p class="text-sm
+              <%= index <= currentIndex
+                ? 'text-gray-800 font-medium'
+                : 'text-gray-400' %>">
+              <%= labels[step] %>
+            </p>
+          </div>
+        <% }) %>
+      </div>
+
+    <% } %>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- ITEMS -->
+    <div class="lg:col-span-2">
+      <div class="bg-white border border-gray-200 rounded-xl">
+        <div class="px-4 sm:px-6 py-3 border-b">
+          <h2 class="font-medium text-gray-800 text-sm sm:text-base">
+            Items in this order
+          </h2>
+        </div>
+
+        <div class="divide-y">
+          <% order.items.forEach(item => { %>
+            <div class="flex gap-4 px-4 sm:px-6 py-4">
+              <img
+                src="<%= item.image %>"
+                alt="<%= item.title %>"
+                class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md border"
+              />
+
+              <div class="flex-1">
+                <p class="font-medium text-gray-800 text-sm sm:text-base">
+                  <%= item.title %>
+                </p>
+
+                <% if (item.variant?.size || item.variant?.color) { %>
+                  <p class="text-xs sm:text-sm text-gray-500 mt-1">
+                    <% if (item.variant.size) { %>
+                      Size: <%= item.variant.size %>
+                    <% } %>
+                    <% if (item.variant.color) { %>
+                      • Color: <%= item.variant.color %>
+                    <% } %>
+                  </p>
+                <% } %>
+
+                <p class="text-xs sm:text-sm text-gray-600 mt-1">
+                  Qty: <%= item.quantity %>
+                </p>
+              </div>
+
+              <div class="font-medium text-gray-800 text-sm">
+                ₹<%= item.price * item.quantity %>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="space-y-4">
+
+      <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
+        <h3 class="font-medium text-gray-800 mb-3 text-sm sm:text-base">
+          Order Summary
+        </h3>
+
+        <div class="flex justify-between text-sm mb-2">
+          <span class="text-gray-500">Order Date</span>
+          <span class="text-gray-700">
+            <%= order.createdAt.toDateString() %>
+          </span>
+        </div>
+
+        <div class="flex justify-between text-sm mb-2">
+          <span class="text-gray-500">Payment</span>
+          <span class="text-gray-700 capitalize">
+            <%= order.paymentStatus %> • <%= order.paymentMethod %>
+          </span>
+        </div>
+
+        <div class="border-t pt-3 mt-3 flex justify-between font-semibold">
+          <span>Total</span>
+          <span>₹<%= order.totalAmount %></span>
+        </div>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
+        <h3 class="font-medium text-gray-800 mb-2 text-sm sm:text-base">
+          Shipping Address
+        </h3>
+
+        <p class="text-sm text-gray-700 leading-relaxed">
+          <%= order.address.name %><br>
+          <%= order.address.line1 %><br>
+          <%= order.address.city %>, <%= order.address.state %><br>
+          <%= order.address.pincode %><br>
+          Phone: <%= order.address.phone %>
+        </p>
+      </div>
+
+      <% if (!["shipped", "delivered", "cancelled"].includes(currentStatus)) { %>
+        <button
+          data-order-id="<%= order._id %>"
+          class="cancel-order-btn w-full bg-red-600 text-white py-3 rounded-md
+                 text-sm font-medium hover:bg-red-700 transition">
+          Cancel Order
+        </button>
+      <% } %>
+
+    </div>
+  </div>
+</div>
+
+<script src="/js/order-details.js"></script>

@@ -1,0 +1,142 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+
+  <!-- Header -->
+  <div class="mb-6 sm:mb-10">
+    <h1 class="text-lg sm:text-2xl font-semibold text-gray-900">
+      Account Overview
+    </h1>
+    <p class="text-sm text-gray-500 mt-1">
+      Review your recent activity and account information
+    </p>
+
+    <a
+      href="/orders"
+      class="inline-block mt-3 sm:mt-4
+             px-4 py-2 rounded-md
+             bg-gray-900 text-white
+             text-sm font-medium
+             hover:bg-black transition">
+      View Orders
+    </a>
+  </div>
+
+  <!-- KPI Cards (2-column on mobile) -->
+  <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
+
+    <!-- Total Orders -->
+    <div class="bg-white border border-gray-200 rounded-xl p-3 sm:p-6">
+      <p class="text-xs text-gray-500">Total Orders</p>
+      <p class="mt-1 text-xl sm:text-3xl font-semibold text-gray-900">
+        <%= totalOrders %>
+      </p>
+      <p class="text-[11px] text-gray-400 mt-1">
+        Lifetime orders
+      </p>
+    </div>
+
+    <!-- Active Orders -->
+    <div class="bg-white border border-gray-200 rounded-xl p-3 sm:p-6">
+      <p class="text-xs text-gray-500">Active Orders</p>
+      <p class="mt-1 text-xl sm:text-3xl font-semibold text-gray-900">
+        <%= recentOrders.filter(o => !['delivered','cancelled'].includes(o.orderStatus)).length %>
+      </p>
+      <p class="text-[11px] text-gray-400 mt-1">
+        In progress
+      </p>
+    </div>
+
+    <!-- Account Status -->
+    <div class="bg-white border border-gray-200 rounded-xl p-3 sm:p-6">
+      <p class="text-xs text-gray-500">Account Status</p>
+      <p class="mt-1 text-sm sm:text-lg font-medium text-green-600">
+        Active
+      </p>
+      <p class="text-[11px] text-gray-400 mt-1">
+        Verified account
+      </p>
+    </div>
+
+    <!-- Support -->
+    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 sm:p-6">
+      <p class="text-xs text-gray-500">Need Help?</p>
+      <a
+        href="/support"
+        class="inline-block mt-2 text-sm font-medium text-gray-900 underline underline-offset-4">
+        Contact Support
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+
+    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b flex items-center justify-between">
+      <h2 class="text-sm sm:text-base font-medium text-gray-900">
+        Recent Orders
+      </h2>
+      <a
+        href="/orders"
+        class="text-sm font-medium text-gray-700 hover:text-black underline">
+        View all
+      </a>
+    </div>
+
+    <% if (!recentOrders || recentOrders.length === 0) { %>
+      <div class="px-6 py-8 text-center text-gray-500 text-sm">
+        No orders placed yet.
+      </div>
+    <% } else { %>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm min-w-[520px]">
+          <thead class="bg-gray-50 text-gray-500">
+            <tr>
+              <th class="px-4 sm:px-6 py-3 text-left font-medium">Order ID</th>
+              <th class="px-4 sm:px-6 py-3 text-left font-medium">Date</th>
+              <th class="px-4 sm:px-6 py-3 text-left font-medium">Status</th>
+              <th class="px-4 sm:px-6 py-3 text-right font-medium">Amount</th>
+              <th class="px-4 sm:px-6 py-3 text-right"></th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y">
+            <% recentOrders.forEach(order => { %>
+              <tr class="hover:bg-gray-50 transition">
+                <td class="px-4 sm:px-6 py-3 font-medium text-gray-900 break-words">
+                  <%= order.orderId %>
+                </td>
+                <td class="px-4 sm:px-6 py-3 text-gray-600">
+                  <%= order.createdAt.toDateString() %>
+                </td>
+                <td class="px-4 sm:px-6 py-3">
+                  <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium
+                    <%= order.orderStatus === 'delivered'
+                      ? 'bg-green-100 text-green-700'
+                      : order.orderStatus === 'cancelled'
+                      ? 'bg-red-100 text-red-700'
+                      : 'bg-yellow-100 text-yellow-700' %>">
+                    <%= order.orderStatus.replace(/_/g,' ') %>
+                  </span>
+                </td>
+                <td class="px-4 sm:px-6 py-3 text-right font-medium text-gray-900">
+                  ₹<%= order.totalAmount %>
+                </td>
+                <td class="px-4 sm:px-6 py-3 text-right">
+                  <a
+                    href="/orders/<%= order._id %>"
+                    class="text-sm font-medium text-gray-700 hover:text-black underline">
+                    View
+                  </a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    <% } %>
+
+  </div>
+
+</div>

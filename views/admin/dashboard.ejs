@@ -1,0 +1,101 @@
+<!-- views/admin/dashboard.ejs -->
+
+<div class="px-4 sm:px-6 py-6 sm:py-8">
+
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-xl sm:text-2xl font-semibold text-gray-800">
+      Admin Dashboard
+    </h1>
+    <p class="text-sm text-gray-500 mt-1">
+      Store performance overview
+    </p>
+  </div>
+
+  <!-- STATS -->
+  <section
+    class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-8">
+
+    <!-- Total Products -->
+    <div class="bg-white rounded-2xl border p-4 sm:p-6">
+      <p class="text-xs sm:text-sm text-gray-500">Total Products</p>
+      <p class="mt-1 sm:mt-3 text-2xl sm:text-4xl font-extrabold text-gray-900">
+        <%= totalProducts %>
+      </p>
+    </div>
+
+    <!-- Total Orders -->
+    <div class="bg-white rounded-2xl border p-4 sm:p-6">
+      <p class="text-xs sm:text-sm text-gray-500">Total Orders</p>
+      <p class="mt-1 sm:mt-3 text-2xl sm:text-4xl font-extrabold text-gray-900">
+        <%= totalOrders %>
+      </p>
+    </div>
+
+    <!-- Total Revenue -->
+    <div class="bg-white rounded-2xl border p-4 sm:p-6">
+      <p class="text-xs sm:text-sm text-gray-500">Total Revenue</p>
+      <p class="mt-1 sm:mt-3 text-2xl sm:text-4xl font-extrabold text-green-600">
+        ₹ <%= totalRevenue.toLocaleString("en-IN") %>
+      </p>
+    </div>
+
+    <!-- Pending Orders -->
+    <div class="bg-white rounded-2xl border p-4 sm:p-6">
+      <p class="text-xs sm:text-sm text-gray-500">Pending Orders</p>
+      <p class="mt-1 sm:mt-3 text-2xl sm:text-4xl font-extrabold text-yellow-600">
+        <%= typeof pendingOrders !== "undefined" ? pendingOrders : 0 %>
+      </p>
+      <a
+        href="/admin/orders"
+        class="text-xs sm:text-sm text-yellow-700 hover:underline mt-1 sm:mt-2 inline-block">
+        Review Orders →
+      </a>
+    </div>
+
+    <!-- Today's Orders -->
+    <div class="bg-white rounded-2xl border p-4 sm:p-6">
+      <p class="text-xs sm:text-sm text-gray-500">Today's Orders</p>
+      <p class="mt-1 sm:mt-3 text-2xl sm:text-4xl font-extrabold text-blue-600">
+        <%= todayOrders %>
+      </p>
+    </div>
+
+    <!-- Today's Revenue -->
+    <div class="bg-white rounded-2xl border p-4 sm:p-6">
+      <p class="text-xs sm:text-sm text-gray-500">Today's Revenue</p>
+      <p class="mt-1 sm:mt-3 text-2xl sm:text-4xl font-extrabold text-green-700">
+        ₹ <%= todayRevenue.toLocaleString("en-IN") %>
+      </p>
+    </div>
+
+  </section>
+
+  <!-- QUICK ACTIONS -->
+  <section class="bg-white rounded-2xl border p-4 sm:p-6">
+    <h2 class="text-base sm:text-lg font-semibold text-gray-800 mb-4">
+      Quick Actions
+    </h2>
+
+    <div class="flex flex-wrap gap-3 sm:gap-4">
+      <a
+        href="/admin/products"
+        class="px-4 py-2 rounded-lg bg-black text-white text-sm hover:bg-gray-900">
+        Manage Products
+      </a>
+
+      <a
+        href="/admin/orders"
+        class="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700">
+        Manage Orders
+      </a>
+
+      <!-- <a
+        href="/admin/users"
+        class="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 text-sm hover:bg-gray-300">
+        View Users
+      </a> -->
+    </div>
+  </section>
+
+</div>

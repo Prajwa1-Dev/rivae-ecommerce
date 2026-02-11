@@ -1,0 +1,139 @@
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+
+    <!-- LEFT : IMAGE -->
+    <div class="bg-neutral-100 rounded-2xl overflow-hidden">
+      <% if (product.images && product.images[0]) { %>
+        <img
+          src="<%= product.images[0].url %>"
+          alt="<%= product.name %>"
+          class="
+            w-full
+            h-[320px] sm:h-[420px] md:h-[520px]
+            object-cover
+          "
+        />
+      <% } else { %>
+        <div
+          class="h-[320px] sm:h-[420px] md:h-[520px]
+                 flex items-center justify-center text-neutral-400">
+          No Image Available
+        </div>
+      <% } %>
+    </div>
+
+    <!-- RIGHT : INFO -->
+    <div class="flex flex-col">
+
+      <!-- TITLE -->
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
+        <%= product.name %>
+      </h1>
+
+      <!-- PRICE -->
+      <div class="mt-3 sm:mt-4">
+        <% if (product.salePrice) { %>
+          <span class="text-2xl sm:text-3xl font-bold text-gray-900">
+            ₹<%= product.salePrice %>
+          </span>
+          <span class="ml-2 sm:ml-3 text-base sm:text-lg line-through text-gray-400">
+            ₹<%= product.price %>
+          </span>
+        <% } else { %>
+          <span class="text-2xl sm:text-3xl font-bold text-gray-900">
+            ₹<%= product.price %>
+          </span>
+        <% } %>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <% if (product.description) { %>
+        <p class="mt-4 sm:mt-6 text-sm sm:text-base text-gray-600 leading-relaxed">
+          <%= product.description %>
+        </p>
+      <% } %>
+
+      <!-- ADD TO CART FORM -->
+      <form
+        action="/cart/add"
+        method="POST"
+        class="mt-8 sm:mt-10"
+        id="addToCartForm"
+      >
+
+        <!-- PRODUCT ID -->
+        <input type="hidden" name="productId" value="<%= product._id %>">
+
+        <!-- SELECTED SIZE -->
+        <% if (product.variants && product.variants.length) { %>
+          <input type="hidden" name="size" id="selectedSize">
+
+          <!-- SIZE BUTTONS -->
+          <div class="mb-6 sm:mb-8">
+            <p class="text-xs sm:text-sm font-semibold tracking-widest text-gray-700 mb-3">
+              SELECT SIZE
+            </p>
+
+            <div class="flex gap-3 flex-wrap">
+              <% product.variants.forEach(v => { %>
+                <button
+                  type="button"
+                  data-size="<%= v.size %>"
+                  class="
+                    size-btn
+                    min-w-[48px]
+                    px-4 py-2
+                    border border-gray-300
+                    rounded-lg
+                    text-sm font-medium
+                    text-gray-800
+                    hover:border-black
+                    active:scale-95
+                    transition
+                  "
+                >
+                  <%= v.size %>
+                </button>
+              <% }) %>
+            </div>
+          </div>
+
+        <% } else { %>
+          <input type="hidden" name="size" value="default">
+        <% } %>
+
+        <!-- ADD TO CART -->
+        <button
+          type="submit"
+          class="
+            w-full
+            bg-black text-white
+            py-4
+            rounded-xl
+            text-sm
+            tracking-widest
+            uppercase
+            font-semibold
+            hover:bg-neutral-800
+            transition
+          "
+        >
+          Add to Cart
+        </button>
+
+      </form>
+
+      <!-- TRUST TEXT -->
+      <p class="mt-4 text-xs text-gray-400 tracking-wide">
+        Free shipping on orders above ₹999 · Easy 7-day returns
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SIZE SELECTION SCRIPT -->
+<script src="/js/product-details.js"></script>

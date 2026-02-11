@@ -1,0 +1,40 @@
+<% layout('layout') -%>
+<section class="max-w-6xl mx-auto p-6">
+  <h2 class="text-2xl font-bold mb-4">Admin — Orders</h2>
+
+  <table class="w-full border">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="p-2">Order ID</th>
+        <th class="p-2">Customer</th>
+        <th class="p-2">Total</th>
+        <th class="p-2">Payment</th>
+        <th class="p-2">Status</th>
+        <th class="p-2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach(o => { %>
+        <tr class="border-t">
+          <td class="p-2"><%= o._id %></td>
+          <td class="p-2"><%= o.customerName %> <br/><%= o.customerPhone %></td>
+          <td class="p-2">₹<%= o.totals.grandTotal %></td>
+          <td class="p-2"><%= o.payment.method %> - <%= o.payment.status %></td>
+          <td class="p-2"><%= o.status %></td>
+          <td class="p-2">
+            <form method="post" action="/admin/orders/<%= o._id %>/status">
+              <select name="status" class="border px-2 py-1">
+                <option value="placed" <%= o.status==='placed'?'selected':'' %>>Placed</option>
+                <option value="processing" <%= o.status==='processing'?'selected':'' %>>Processing</option>
+                <option value="shipped" <%= o.status==='shipped'?'selected':'' %>>Shipped</option>
+                <option value="delivered" <%= o.status==='delivered'?'selected':'' %>>Delivered</option>
+                <option value="cancelled" <%= o.status==='cancelled'?'selected':'' %>>Cancelled</option>
+              </select>
+              <button type="submit" class="ml-2 px-3 py-1 border">Update</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>

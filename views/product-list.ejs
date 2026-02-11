@@ -1,0 +1,104 @@
+<section class="px-4 sm:px-6 py-8 sm:py-16 max-w-7xl mx-auto">
+
+  <!-- PAGE HEADER -->
+  <div class="text-center mb-6 sm:mb-10">
+    <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
+      Collections
+    </h1>
+    <p class="text-neutral-500 mt-2 sm:mt-3 tracking-wide text-xs sm:text-sm uppercase">
+      Premium Urban Fashion · Curated by RIVAE
+    </p>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <% if (products.length === 0) { %>
+    <div class="text-center py-16">
+      <h3 class="text-xl sm:text-2xl font-semibold mb-2">
+        No products available
+      </h3>
+      <p class="text-neutral-500 text-sm">
+        Please check back later.
+      </p>
+    </div>
+  <% } %>
+
+  <!-- PRODUCTS GRID -->
+  <div class="flex justify-center">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-14">
+
+      <% products.forEach(product => { %>
+
+        <a href="/products/<%= product.slug %>" class="group block">
+
+          <!-- PRODUCT CARD -->
+          <div class="rounded-2xl border border-neutral-200 bg-white overflow-hidden
+                      transition-all duration-300
+                      hover:-translate-y-1
+                      hover:shadow-xl hover:border-neutral-400">
+
+            <!-- IMAGE -->
+            <div class="relative overflow-hidden bg-neutral-100">
+              <% if (product.images && product.images[0]) { %>
+                <img
+                  src="<%= product.images[0].url %>"
+                  alt="<%= product.name %>"
+                  class="
+                    w-full
+                    h-[200px] sm:h-[260px] md:h-[320px]
+                    object-cover
+                    transition duration-700 ease-out
+                    group-hover:scale-105
+                  "
+                />
+              <% } else { %>
+                <div
+                  class="h-[200px] sm:h-[260px] md:h-[320px]
+                         flex items-center justify-center
+                         text-neutral-400 text-sm">
+                  No Image
+                </div>
+              <% } %>
+
+              <!-- SALE BADGE -->
+              <% if (product.salePrice) { %>
+                <span
+                  class="absolute top-3 left-3 bg-black text-white
+                         text-[10px] px-3 py-1 rounded-full tracking-widest">
+                  SALE
+                </span>
+              <% } %>
+            </div>
+
+            <!-- INFO -->
+            <div class="p-3 sm:p-4 text-center border-t border-neutral-100">
+
+              <h3 class="font-semibold text-[14px] sm:text-[15px] tracking-tight leading-snug line-clamp-2">
+                <%= product.name %>
+              </h3>
+
+              <% if (product.salePrice) { %>
+                <div class="mt-1 sm:mt-2 flex items-center justify-center gap-2">
+                  <span class="text-base sm:text-lg font-semibold">
+                    ₹<%= product.salePrice %>
+                  </span>
+                  <span class="text-xs sm:text-sm line-through text-neutral-400">
+                    ₹<%= product.price %>
+                  </span>
+                </div>
+              <% } else { %>
+                <p class="text-base sm:text-lg font-semibold mt-1 sm:mt-2">
+                  ₹<%= product.price %>
+                </p>
+              <% } %>
+
+            </div>
+
+          </div>
+        </a>
+
+      <% }) %>
+
+    </div>
+  </div>
+
+</section>

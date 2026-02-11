@@ -1,0 +1,90 @@
+<%
+  pageTitle = "My Profile";
+%>
+
+<section class="max-w-5xl mx-auto px-6 py-16">
+
+  <!-- Page Header -->
+  <header class="mb-12">
+    <h1 class="text-3xl font-semibold tracking-tight text-neutral-900">
+      My Profile
+    </h1>
+    <p class="text-sm text-neutral-500 mt-2">
+      Review and manage your personal information
+    </p>
+  </header>
+
+  <!-- Profile Card -->
+  <div class="bg-white border border-neutral-200 rounded-2xl shadow-sm overflow-hidden">
+
+    <!-- Card Top -->
+    <div class="px-10 py-8 border-b border-neutral-200 flex items-center justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-neutral-500">
+          Account Overview
+        </p>
+        <p class="text-sm text-neutral-400 mt-1">
+          Your primary account details
+        </p>
+      </div>
+
+      <!-- Disabled until feature exists -->
+      <button
+        disabled
+        class="px-6 py-2 text-sm font-medium border rounded-lg
+               text-neutral-400 cursor-not-allowed bg-neutral-50">
+        Edit Profile
+      </button>
+    </div>
+
+    <!-- Card Content -->
+    <div class="px-10 py-10 grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+
+      <!-- Full Name -->
+      <div>
+        <p class="text-xs uppercase tracking-widest text-neutral-500">
+          Full Name
+        </p>
+        <p class="text-base font-medium mt-2 text-neutral-900">
+          <%= user.name %>
+        </p>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <p class="text-xs uppercase tracking-widest text-neutral-500">
+          Email Address
+        </p>
+        <p class="text-base font-medium mt-2 text-neutral-900">
+          <%= user.email %>
+        </p>
+      </div>
+
+      <!-- Membership -->
+      <div>
+        <p class="text-xs uppercase tracking-widest text-neutral-500">
+          Membership Status
+        </p>
+        <p class="text-base font-medium mt-2 text-neutral-900">
+          Active Member
+        </p>
+      </div>
+
+      <!-- Member Since -->
+      <div>
+        <p class="text-xs uppercase tracking-widest text-neutral-500">
+          Member Since
+        </p>
+        <p class="text-base font-medium mt-2 text-neutral-900">
+          <%= new Date(user.createdAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long"
+          }) %>
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
